@@ -136,6 +136,65 @@ function submitInformation(title,desc,file)
 
 }
 
+function getAllRecipe()
+{
+	var query=firebase.firestore().collection('Recipes');
+
+	query.onSnapshot(function(snapshot){
+
+			console.log('Inside onSnapshot')
+
+			snapshot.docChanges().forEach(function(change){
+
+				console.log('hi')
+
+				if(change.type==='removed')
+				{
+					console.log("removed")	
+					//delete
+				}
+				else
+				{
+					//calling display recipe	
+						console.log("calling displayRecipe");
+					var recipe=change.doc.data();
+					displayRecipe(recipe,change.doc.id);
+				}
+			})
+	})
+}
+
+function displayRecipe(recipe,id)
+{
+		console.log("Inside displayRecipe");
+        console.log(recipe);
+
+	    const container = document.createElement('div');
+	    container.innerHTML = MESSAGE_TEMPLATE;
+	    const div = container.firstChild;
+        div.setAttribute('id', id);
+
+        	var imageUrl=recipe.imageUrl;
+
+        	if(imageUrl)
+        	{
+        		div.querySelector('.pic').removeAttribute('hidden');
+        		div.querySelector('.pic').style.backgroundImage = "url('"+imageUrl+"')";
+        	}
+	   		
+
+	   		div.querySelector('.title').innerHTML=recipe.title;
+
+
+	   		console.log("------------"+div.querySelector('.description'))	
+
+			div.querySelector('.description').innerHTML=recipe.desc;
+
+		
+	  	recipeListElement.append(container)	;
+
+}
+
 // Shortcuts to DOM Elements.
 var messageListElement = document.getElementById('messages');
 var messageFormElement = document.getElementById('message-form');
@@ -149,8 +208,8 @@ var userNameElement = document.getElementById('user-name');
 var signInButtonElement = document.getElementById('sign-in');
 var signOutButtonElement = document.getElementById('sign-out');
 var signInSnackbarElement = document.getElementById('must-signin-snackbar');
-var addRecipeForm = document.getElementById("add_recipe_form");
-var recipeListElement=document.getElementById("recipes");
+var addRecipeForm = document.getElementById('add_recipe_form');
+var recipeListElement=document.getElementById('recipes');
 
 signOutButtonElement.addEventListener('click', signOut);
 signInButtonElement.addEventListener('click', signIn);
@@ -160,6 +219,14 @@ imageFormElement.addEventListener('submit',event=>{
 	addARecipe(event);
 })
 
+
+// Template for messages.
+var MESSAGE_TEMPLATE =
+    '<div class="card p-5 m-5">' +
+      '<div hidden class="pic"></div>' +
+      '<div class="title"></div>' +
+      '<div class="description"></div>' +
+    '</div>';
 
  document.addEventListener('DOMContentLoaded', function() {
         // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
@@ -175,7 +242,7 @@ imageFormElement.addEventListener('submit',event=>{
         try {
 			// initialize Firebase
 			initFirebaseAuth();
-
+			getAllRecipe();	
 
         } catch (e) {
           console.error(e);
