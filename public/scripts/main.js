@@ -51,7 +51,7 @@ function authStateObserver(user) {
     signOutButtonElement.removeAttribute('hidden');
 
     //display the recipe upload form
-    addRecipeForm.removeAttribute('hidden');
+    containerAddRecipe.removeAttribute('hidden');
 
     // Hide sign-in button.
     signInButtonElement.setAttribute('hidden', 'true');
@@ -185,14 +185,21 @@ function displayRecipe(recipe,id)
 
 	   		div.querySelector('.title').innerHTML=recipe.title;
 
-
 	   		console.log("------------"+div.querySelector('.description'))	
 
 			div.querySelector('.description').innerHTML=recipe.desc;
-
 		
-	  	recipeListElement.append(container)	;
+	  		recipeListElement.append(container)	;
 
+			container.addEventListener('click',event=>showRecipeDetails(recipe,id));
+
+}
+
+
+function showRecipeDetails(recipe,id)
+{
+	containerAddRecipe.setAttribute('hidden',true);
+	containerRecipeDetals.removeAttribute('hidden');
 }
 
 // Shortcuts to DOM Elements.
@@ -210,6 +217,8 @@ var signOutButtonElement = document.getElementById('sign-out');
 var signInSnackbarElement = document.getElementById('must-signin-snackbar');
 var addRecipeForm = document.getElementById('add_recipe_form');
 var recipeListElement=document.getElementById('recipes');
+var containerAddRecipe=document.getElementById('add-recipe');
+var containerRecipeDetals=document.getElementById('recipe-details');
 
 signOutButtonElement.addEventListener('click', signOut);
 signInButtonElement.addEventListener('click', signIn);
@@ -240,6 +249,7 @@ var MESSAGE_TEMPLATE =
         // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
 
         try {
+
 			// initialize Firebase
 			initFirebaseAuth();
 			getAllRecipe();	
