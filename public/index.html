@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+    <title>Welcome to Guwahati Foodie</title>
 
     
     <style media="screen">
@@ -29,14 +29,17 @@
 
         <!-- App Styling -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
-        <link rel="stylesheet" href="styles/main.css">
+        <!-- <link rel="stylesheet" href="styles/main.css"> -->
+
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   </head>
   <body>
 
     <header class="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
     <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
       <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
-        <h3><i class="material-icons">chat_bubble_outline</i> Friendly Chat</h3>
+        <h3>Guwahati Foodie</h3>
       </div>
       <div id="user-container">
         <div hidden id="user-pic"></div>
@@ -50,14 +53,38 @@
       </div>
     </div>
   </header>
-    <div id="message">
+<!--     <div id="message">
       <h2>Welcome</h2>
       <h1>Firebase Hosting Setup Complete</h1>
       <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
       <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
-    </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
+    </div> -->
+    <!-- <p id="load">Firebase SDK Loading&hellip;</p> -->
 
+    <div class="container">
+      <div hidden id="add_recipe_form" class="card col m-5 p-5">
+        <form id="image-form" action="#">
+          <label>Title:</label><input type="text" id="title" name="title">
+          <br>
+          <label>Desc:</label><textarea id="desc" name="desc"></textarea>  
+          <br>   
+          <input id="mediaCapture" type="file" accept="image/*" capture="camera"/>
+          <br>
+          <br>
+
+          <input type="submit" name="Save">
+
+        </form>
+      </div>
+      <div id="recipes">
+        
+      </div>
+    </div>
+
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     
     <!-- update the version number as needed -->
     <script defer src="/__/firebase/7.14.1/firebase-app.js"></script>
@@ -66,6 +93,7 @@
     <script defer src="/__/firebase/7.14.1/firebase-database.js"></script>
     <script defer src="/__/firebase/7.14.1/firebase-messaging.js"></script>
     <script defer src="/__/firebase/7.14.1/firebase-storage.js"></script>
+    <script defer src="/__/firebase/7.14.1/firebase-firestore.js"></script>
     <!-- initialize the SDK after all desired features are loaded -->
     <script defer src="/__/firebase/init.js"></script>
     <script src="scripts/main.js"></script>

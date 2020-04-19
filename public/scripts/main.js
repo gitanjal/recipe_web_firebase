@@ -50,6 +50,9 @@ function authStateObserver(user) {
     userPicElement.removeAttribute('hidden');
     signOutButtonElement.removeAttribute('hidden');
 
+    //display the recipe upload form
+    addRecipeForm.removeAttribute('hidden');
+
     // Hide sign-in button.
     signInButtonElement.setAttribute('hidden', 'true');
 
@@ -75,7 +78,63 @@ function addSizeToGoogleProfilePic(url) {
   return url;
 }
 
+function addARecipe(event)
+{
+	console.log(event)
+	event.preventDefault();
+	  var file = event.target.mediaCapture.files[0];
 
+
+	  var title = document.forms["image-form"]["title"].value;
+	  var desc = document.forms["image-form"]["desc"].value;
+
+	  // Clear the selection in the file picker input.
+	  imageFormElement.reset();
+
+	  // Check if the file is an image.
+	  if (!file.type.match('image.*')) {
+	    var data = {
+	      message: 'You can only share images',
+	      timeout: 2000
+	    };
+	    signInSnackbarElement.MaterialSnackbar.showSnackbar(data);
+	    return;
+	  }
+
+	submitInformation(title,desc,file);
+}
+
+function submitInformation(title,desc,file)
+{
+
+	firebase.firestore().collection('Recipes').add({
+	    title:title,
+	    shortDesc:desc,
+	    desc:desc,
+	    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+	  }).then(function(messageRef){
+
+	  	console.log("Uploading image");
+
+	    var filePath=firebase.auth().currentUser.uid+'/'+messageRef.id+'/'+file.name;
+	    return firebase.storage().ref(filePath).put(file).then(function(fileSnapshot){
+
+	    	console.log("Uploaded")
+	      return fileSnapshot.ref.getDownloadURL().then((url)=>{
+	      	console.log("Get download url")
+	        return messageRef.update({
+	          imageUrl:url,
+	          storageUri: fileSnapshot.metadata.fullPath
+	        })
+	      })
+	    }).catch(function(error) {
+	    console.error('There was an error uploading a file to Cloud Storage:', error);
+ 	});
+	  }).catch(function(error) {
+	    console.error('There was an error uploading a file to Cloud Storage:', error);
+ 	});
+
+}
 
 // Shortcuts to DOM Elements.
 var messageListElement = document.getElementById('messages');
@@ -90,13 +149,16 @@ var userNameElement = document.getElementById('user-name');
 var signInButtonElement = document.getElementById('sign-in');
 var signOutButtonElement = document.getElementById('sign-out');
 var signInSnackbarElement = document.getElementById('must-signin-snackbar');
-
+var addRecipeForm = document.getElementById("add_recipe_form");
+var recipeListElement=document.getElementById("recipes");
 
 signOutButtonElement.addEventListener('click', signOut);
 signInButtonElement.addEventListener('click', signIn);
 
 
-
+imageFormElement.addEventListener('submit',event=>{
+	addARecipe(event);
+})
 
 
  document.addEventListener('DOMContentLoaded', function() {
@@ -111,12 +173,6 @@ signInButtonElement.addEventListener('click', signIn);
         // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
 
         try {
-          let app = firebase.app();
-          let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
-          document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
-
-	      // signIn();
-
 			// initialize Firebase
 			initFirebaseAuth();
 
@@ -125,4 +181,4 @@ signInButtonElement.addEventListener('click', signIn);
           console.error(e);
           document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
         }
-      });
+});
