@@ -222,6 +222,7 @@ function showRecipeDetails(recipe,id)
 		containerRecipeDetals.querySelector('input#recipe_id').value=id;
 	
 		var ingredientsElementList=containerRecipeDetals.querySelector('.recipe-ingredients');
+		var instructionsElementList=containerRecipeDetals.querySelector('.recipe-instructions');
 
 		recipe.ingredients.filter(function(ingredient,index){
 			
@@ -231,18 +232,19 @@ function showRecipeDetails(recipe,id)
 				const containerIngredientElement = document.createElement('div');
 				containerIngredientElement.innerHTML=ingredientElement;
 				ingredientsElementList.append(containerIngredientElement);
-	
 			}			
 		})
 
-		// recipe.ingredients.forEach(function(ingredient){
+		recipe.instructions.filter(function(instruction,index){
 			
-		// 	var ingredientElement='<div>'+ingredient.title+'('+ingredient.quantity+')</div>';
-	
-		// 	const containerIngredientElement = document.createElement('div');
-		// 	containerIngredientElement.innerHTML=ingredientElement;
-		// 	ingredientsElementList.append(containerIngredientElement);
-		// })
+			if(index>instructionsElementList.childElementCount)
+			{
+				var instructionElement='<div>'+instruction+'</div>';
+				const containerInstructionElement = document.createElement('div');
+				containerInstructionElement.innerHTML=instructionElement;
+				instructionsElementList.append(containerInstructionElement);
+			}			
+		})
 	
 	})
 }
