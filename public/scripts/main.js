@@ -166,6 +166,7 @@ function getAllRecipe()
 
 function displayRecipe(recipe,id)
 {
+
 		console.log("Inside displayRecipe");
         console.log(recipe);
 
@@ -196,30 +197,54 @@ function displayRecipe(recipe,id)
 function showRecipeDetails(recipe,id)
 {
 
-	containerAddRecipe.setAttribute('hidden',true);
-	containerRecipeDetals.removeAttribute('hidden');
+	firebase.firestore().collection('Recipes').doc(id)
+	.onSnapshot({
+		includeMetadataChanges:true
+	},function(doc){
 
 
-	var imageUrl=recipe.imageUrl;
+		var recipe=doc.data();
 
-	if(imageUrl)
-	{
-		containerRecipeDetals.querySelector('.recipe-image').style.backgroundImage = "url('"+imageUrl+"')";
-	}
-	containerRecipeDetals.querySelector('.recipe-title').innerHTML=recipe.title;
-	containerRecipeDetals.querySelector('.recipe-desc').innerHTML=recipe.desc;
-	containerRecipeDetals.querySelector('input#recipe_id').value=id;
-
-	var ingredientsElementList=containerRecipeDetals.querySelector('.recipe-ingredients');
-	recipe.ingredients.forEach(function(ingredient){
+		console.log(recipe)
 		
-		var ingredientElement='<div>'+ingredient.title+'('+ingredient.quantity+')</div>';
-
-		const containerIngredientElement = document.createElement('div');
-		containerIngredientElement.innerHTML=ingredientElement;
-		ingredientsElementList.append(containerIngredientElement);
-	})
+		containerAddRecipe.setAttribute('hidden',true);
+		containerRecipeDetals.removeAttribute('hidden');
 	
+	
+		var imageUrl=recipe.imageUrl;
+	
+		if(imageUrl)
+		{
+			containerRecipeDetals.querySelector('.recipe-image').style.backgroundImage = "url('"+imageUrl+"')";
+		}
+		containerRecipeDetals.querySelector('.recipe-title').innerHTML=recipe.title;
+		containerRecipeDetals.querySelector('.recipe-desc').innerHTML=recipe.desc;
+		containerRecipeDetals.querySelector('input#recipe_id').value=id;
+	
+		var ingredientsElementList=containerRecipeDetals.querySelector('.recipe-ingredients');
+
+		recipe.ingredients.filter(function(ingredient,index){
+			
+			if(index>ingredientsElementList.childElementCount)
+			{
+				var ingredientElement='<div>'+ingredient.title+'('+ingredient.quantity+')</div>';
+				const containerIngredientElement = document.createElement('div');
+				containerIngredientElement.innerHTML=ingredientElement;
+				ingredientsElementList.append(containerIngredientElement);
+	
+			}			
+		})
+
+		// recipe.ingredients.forEach(function(ingredient){
+			
+		// 	var ingredientElement='<div>'+ingredient.title+'('+ingredient.quantity+')</div>';
+	
+		// 	const containerIngredientElement = document.createElement('div');
+		// 	containerIngredientElement.innerHTML=ingredientElement;
+		// 	ingredientsElementList.append(containerIngredientElement);
+		// })
+	
+	})
 }
 
 function addIngrediants()
