@@ -184,9 +184,6 @@ function displayRecipe(recipe,id)
 	   		
 
 	   		div.querySelector('.title').innerHTML=recipe.title;
-
-	   		console.log("------------"+div.querySelector('.description'))	
-
 			div.querySelector('.description').innerHTML=recipe.desc;
 		
 	  		recipeListElement.append(container)	;
@@ -198,8 +195,59 @@ function displayRecipe(recipe,id)
 
 function showRecipeDetails(recipe,id)
 {
+
 	containerAddRecipe.setAttribute('hidden',true);
 	containerRecipeDetals.removeAttribute('hidden');
+
+
+	var imageUrl=recipe.imageUrl;
+
+	if(imageUrl)
+	{
+		containerRecipeDetals.querySelector('.recipe-image').style.backgroundImage = "url('"+imageUrl+"')";
+	}
+	containerRecipeDetals.querySelector('.recipe-title').innerHTML=recipe.title;
+	containerRecipeDetals.querySelector('.recipe-desc').innerHTML=recipe.desc;
+	containerRecipeDetals.querySelector('input#recipe_id').value=id;
+
+	var ingredientsElementList=containerRecipeDetals.querySelector('.recipe-ingredients');
+	recipe.ingredients.forEach(function(ingredient){
+		
+		var ingredientElement='<div>'+ingredient.title+'('+ingredient.quantity+')</div>';
+
+		const containerIngredientElement = document.createElement('div');
+		containerIngredientElement.innerHTML=ingredientElement;
+		ingredientsElementList.append(containerIngredientElement);
+	})
+	
+}
+
+function addIngrediants()
+{
+	var id=containerRecipeDetals.querySelector('input#recipe_id').value;
+	var ingredient=containerRecipeDetals.querySelector('input#ingredient').value;
+	var qty=containerRecipeDetals.querySelector('input#qty').value;
+
+	containerRecipeDetals.querySelector('input#ingredient').value="";
+	containerRecipeDetals.querySelector('input#qty').value="";
+
+	var docRef=firebase.firestore().collection('Recipes').doc(id);
+	docRef.update("ingredients", firebase.firestore.FieldValue.arrayUnion({'title':ingredient,'quantity':qty}));
+}
+
+function addInstruction()
+{
+
+	console.log()
+
+	var id=containerRecipeDetals.querySelector('input#recipe_id').value;
+	var instruction=containerRecipeDetals.querySelector('input#instruction').value;
+
+	containerRecipeDetals.querySelector('input#instruction').value="";
+
+	var docRef=firebase.firestore().collection('Recipes').doc(id);
+	docRef.update("instructions", firebase.firestore.FieldValue.arrayUnion(instruction));
+
 }
 
 // Shortcuts to DOM Elements.
@@ -228,6 +276,7 @@ imageFormElement.addEventListener('submit',event=>{
 	addARecipe(event);
 })
 
+// btnAddInstruction.addEventListener('click',)
 
 // Template for messages.
 var MESSAGE_TEMPLATE =

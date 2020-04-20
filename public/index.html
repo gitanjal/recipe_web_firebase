@@ -82,17 +82,18 @@
     </div>
 
     <div hidden id="recipe-details" class="container">
-      <div class="card"> 
+      <div class="card m-5 p-5"> 
         <div class="recipe-image"></div>
         <div class="recipe-title"></div>
         <div class="recipe-desc"></div>
         <div class="recipe-ingredients"></div>
         <div class="recipe-instructions"></div>
+        <input hidden id="recipe_id" value=""/>
         <div class="add-ingredients">
-          
+          <label>Add ingrediant:</label><input type="text" id="ingredient"><label>Add quantity:</label><input type="text" id="qty"><input type="button" value="Add" id="btn-ingrediant" onclick="addIngrediants()"/>
         </div>
         <div class="add-instructions">
-
+          <label>Add instruction:</label><input type="text" id="instruction"><input type="submit" value="Add" id="btn-instruction" onclick="addInstruction()"/>
         </div>
       </div>
     </div>
