@@ -180,7 +180,7 @@ function displayRecipe(recipe,id)
         	if(imageUrl)
         	{
         		div.querySelector('.pic').removeAttribute('hidden');
-        		div.querySelector('.pic').style.backgroundImage = "url('"+imageUrl+"')";
+        		div.querySelector('.img_recipe').setAttribute('src',imageUrl) ;
         	}
 	   		
 
@@ -308,7 +308,7 @@ imageFormElement.addEventListener('submit',event=>{
 // Template for messages.
 var MESSAGE_TEMPLATE =
     '<div class="card p-5 m-5">' +
-      '<div hidden class="pic"></div>' +
+      '<div hidden class="pic"><img class="img_recipe img-fluid"></div>' +
       '<div class="title"></div>' +
       '<div class="description"></div>' +
     '</div>';
