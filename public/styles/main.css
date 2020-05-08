@@ -6,6 +6,6 @@
 
 .recipe-image
 {
-    width: 500px;
-    height:400px;
+    max-width: 100%;
+    height: auto;
 }

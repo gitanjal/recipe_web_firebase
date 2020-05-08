@@ -215,7 +215,9 @@ function showRecipeDetails(recipe,id)
 	
 		if(imageUrl)
 		{
-			containerRecipeDetals.querySelector('.recipe-image').style.backgroundImage = "url('"+imageUrl+"')";
+//			containerRecipeDetals.querySelector('.recipe-image').style.backgroundImage = "url('"+imageUrl+"')";
+			containerRecipeDetals.querySelector('#r-img').setAttribute('src',imageUrl) ;
+
 		}
 		containerRecipeDetals.querySelector('.recipe-title').innerHTML=recipe.title;
 		containerRecipeDetals.querySelector('.recipe-desc').innerHTML=recipe.desc;
@@ -307,7 +309,7 @@ imageFormElement.addEventListener('submit',event=>{
 
 // Template for messages.
 var MESSAGE_TEMPLATE =
-    '<div class="card p-5 m-5">' +
+    '<div class="card p-5 m-1 mt-5">' +
       '<div hidden class="pic"><img class="img_recipe img-fluid"></div>' +
       '<div class="title"></div>' +
       '<div class="description"></div>' +
